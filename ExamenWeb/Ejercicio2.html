@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang='es'>
+        <head>
+              <meta charset="utf-8" />
+              <title></title>
+
+              <script type="text/javascript">
+                  
+                  function Campeonato(jugadores, juegos){
+                      this.jugadores = jugadores;
+                      this.juegos = juegos;
+                      
+                      this.listarJugadores = function(){
+                          document.write("LISTADO DE JUGADORES: <br/>");
+                          for(var i = 0; i < this.jugadores.length; i++){
+                              this.jugadores[i].mostrarDatos();
+                              this.jugadores[i].puntuacion();
+                          }
+                          document.write("<br/>");
+                      }
+                      this.listarJuegos = function(){
+                          document.write("LISTADO DE JUEGOS: <br/>");
+                          for(var i = 0; i < this.juegos.length; i++){
+                             this.juegos[i].descripcion();
+                          }
+                        document.write("<br/>");
+                      }
+                      
+                  }
+            
+                  function Jugador(nombre, resultados = []){
+                      this.nombre = nombre;
+                      this.resultados = resultados;
+                      
+                      this.getResultados = function(){
+                          return resultados;
+                      }
+                      
+                      this.mostrarDatos = function(){
+                          for (i in this){
+                              if(typeof this[i] !== "function"){
+                                  document.write(this[i] + "<br/>");
+                              }
+                          }
+                        this.puntuacion = function(){
+                            var cero = Math.min(...this.getResultados());
+                            var max = Math.max(...this.getResultados());
+                            var sum = 0;
+                            for(var i=0; i< this.getResultados().length; i++){
+                                sum+= this.getResultados()[i];
+                            }
+                        
+                            if(cero == 0){
+                                document.write("Este jugador si ha obtenido en algun juego 0 puntos. <br/>");
+                            }else{
+                                document.write("Este jugador no ha obtenido en algun juego 0 puntos. <br/>");
+                            }
+                            document.write("La mejor puntuacion ha sido: " + max + ".<br/>");
+                            document.write("Media de puntos: " + sum/this.getResultados().length + "<br/>");
+                            document.write("Puntuacion total: " + sum + ".<br/><br/>")
+                        }
+                      }
+                  }
+                  
+                  function Juego(nombre, tipo, jugadores){
+                      this.nombre = nombre;
+                      this.tipo = tipo;
+                      this.jugadores = jugadores;
+                      
+                      this.getDatos = function(){
+                          for(i in this){
+                              if(typeof this[i] !== "function"){
+                                  document.write(this[i]);
+                              }
+                          }
+                      }
+                      
+                      this.descripcion = function(){
+                          document.write(this.nombre + ", en el que participan " + this.jugadores + " jugador/es y se utiliza " + this.tipo + "<br/>");
+                      }
+                  }
+                      
+
+                  function Baraja(tipo, numeroCartas){
+                      
+                      this.tipo = tipo;
+                      this.numeroCartas = numeroCartas;
+                      
+                      this.getTipo = function(){
+                          return this.tipo;
+                      }
+
+                      this.getCartas = function(){
+                          return this.numeroCartas;
+                      }
+                      
+                      this.toString = function(){
+                          return "la baraja es " + this.getTipo() + " que contiene " + this.getCartas() + " cartas." ;
+                      }
+                  }
+                  
+                  function Dados(numero){
+                      this.numero = numero;
+                      
+                      this.toString = function(){
+                          return  this.numero + " dados";
+                      }
+                  }
+                  
+                  resultj1 = [3,4,6,2,5,6,6];
+                  resultj2 = [2,34,5,64,23,5,3];
+                  j1 = new Jugador("Daniel", resultj1);
+
+                  j2 = new Jugador("Jose", resultj2);
+
+                  b1 = new Baraja("Española", 48);
+                  b2 = new Baraja("Poker", 50);
+                  d1 = new Dados(2);
+                  juego1 = new Juego("Solitario", b2, 1);
+                  
+                  juego2 = new Juego("21", d1, 2);
+                  
+                  juego3 = new Juego("Ronda", b1, 4);
+                  
+                  jugadores = [j1,j2];
+                  juegos = [juego1, juego2, juego3];
+                  
+                  camp1 = new Campeonato(jugadores, juegos);
+                  camp1.listarJuegos();
+                  camp1.listarJugadores();
+              </script>
+            
+              
+        </head>
+        <body>
+              
+        </body>
+</html>

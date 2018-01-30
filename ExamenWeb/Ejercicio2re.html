@@ -1,0 +1,118 @@
+<html>
+<head>
+<title>Ejercicio 2 examen </title>
+<meta charset="utf-8">
+<script src="cookies.js" charset="utf-8"></script>
+<script type="text/javascript">
+
+    class Jugador {
+        constructor(nombre, resultados = []){
+            this.nombre = nombre;
+            this.resultados = resultados;
+        }
+
+        getDatos(){
+
+            var sumatorio = this.resultados.reduce((total,num)=>{ return total+num;});
+            console.log(sumatorio);
+            document.write(this.nombre + "</br>");
+            //document.write(this.resultados + "</br>");
+            if(Math.min(...this.resultados) == 0){
+                document.write("Este jugador ha obtenido en algun juego 0 puntos </br>");
+            }else{
+                document.write("Este jugador no ha obtenido en algun juego 0 puntos </br>");
+            }
+            document.write("La mejor puntuacion ha sido: " + Math.max(...this.resultados) + "</br>");
+            document.write("Media de puntos: " + (sumatorio/this.resultados.length).toFixed(2) + "</br>");
+            document.write("Puntuacion total: " + sumatorio + "</br></br>");
+     }
+
+    }
+
+     class Juego{
+         constructor(nombre, numJugadores){
+             this.nombre = nombre;
+             this.numJugadores = numJugadores;
+         }
+
+         toString(){
+             return this.nombre + ", en el que participan " + this.numJugadores + " jugador/es ";
+         }
+     }
+
+    class JuegoCartas extends Juego{
+        constructor(nombre, numJugadores, tipoBaraja = "Española", numCartas="48"){
+            super(nombre, numJugadores);
+            this.numCartas = numCartas;
+            this.tipoBaraja = tipoBaraja;
+
+        }
+
+        toString(){
+            return super.toString() + "y se utiliza la baraja de " + this.tipoBaraja + " que contiene " + this.numCartas + " cartas </br>";
+        }
+    }
+
+    class JuegoDados extends Juego{
+        constructor(nombre, numJugadores, numDados = 2){
+            super(nombre, numJugadores);
+            this.numDados = numDados;
+        }
+
+        toString(){
+            return super.toString() + ", y se utilizan " + this.numDados + " dados. </br>";
+        }
+    }
+
+
+    class Campeonato{
+        constructor(jugadores, juegos){
+        this.jugadores = jugadores;
+        this.juegos = juegos;
+        }
+
+        mostrarCampeonato(){
+            document.write("<h3>LISTADO DE JUEGOS</h3></br>");
+            for(var i = 0; i < this.juegos.length; i++){
+                document.write(this.juegos[i]);
+            }
+            document.write("</br></br>");
+
+            document.write("<h3>LISTADO DE JUGADORES</h3></br>");
+            for(var i = 0; i < this.jugadores.length; i++){
+                document.write(this.jugadores[i].getDatos());
+            }
+        }
+
+        static prueba(){
+            return "mensaje de prueba estatico";
+        }
+
+    }
+
+    res1 = [24,4,52,9,34,6,0];
+    //res1.sort((a,b)=>{return a-b});
+    console.log(res1);
+    j1 = new Jugador("Daniel", res1);
+    j2  = new Jugador("Manolo", [0,5,2,6,7,8,63]);
+    jd1 = new JuegoDados("Ruleta", 4, 2);
+    jc1 = new JuegoCartas("Solitario", 1, "Poker", 50);
+    jc2 = new JuegoCartas("Rentoi", 4);
+
+    camp = new Campeonato([j1,j2], [jc1,jc2,jd1]);
+    camp.mostrarCampeonato();
+    console.log(Campeonato.prueba());
+
+    console.log(j1.nombre);
+
+
+</script>
+
+
+
+
+</head>
+
+<body></body>
+
+<html>

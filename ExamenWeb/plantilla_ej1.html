@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang='es'>
+        <head>
+              <meta charset="utf-8" />
+              <title></title>
+              <style type="text/css">
+                  .error{color:red;}
+              </style>
+              <script type="text/javascript" src="cookies.js"></script>
+              <script type="text/javascript" src="limpiar_codigo.js"></script>
+              <script type="text/javascript">
+
+
+              var bien = [false, false, false];
+              var to;
+              var vent;
+
+              function comprobar(){
+                  switch(this.name){
+                      case("nombre"): comprobarNombre(this.value); break;
+                      case("telefono"): comprobarTel(this.value); break;
+                      case("meses"): comprobarMeses(this.value); break;
+                      default: console.log("Evento invalido"); break;
+                  }
+              }
+
+
+              function comprobarNombre(valor){
+                                var vacio = document.createElement("p");
+              vacio.setAttribute("class", "error");
+              vacio.appendChild(document.createTextNode("Campo vacío"));
+
+                  var correcto = false;
+                  var mal = document.createElement("p");
+                  mal.setAttribute("class", "error");
+                  mal.appendChild(document.createTextNode("Nombre no valido"));
+                  var pattMinus = /[a-z]/;
+                  var pattMayus = /[A-Z]/;
+                  var pattNum = /[0-9]/;
+                  var nombre = document.getElementsByTagName("label")[0];
+                  console.log(nombre.children);
+                  
+                  if(valor !== ''){
+                      var todo =  (pattMayus.test(valor) && pattMinus.test(valor) && pattNum.test(valor) && ((valor.includes('.')) || valor.includes('-') || valor.includes('_'))); 
+                      if( todo ){
+                          console.log("todo correcto");
+                          bien[0] = true;
+                          if(nombre.children.length==2){
+                              nombre.removeChild(nombre.lastChild);
+                          }
+                      }else if(nombre.children.length == 2){
+                          bien[0] = false;
+                          nombre.replaceChild(mal, nombre.lastChild);
+                      }else{
+                          bien[0] = false;
+                          nombre.appendChild(mal);
+                      }
+                  }else if(nombre.children.length == 2){
+                      bien[0] = false;
+                      nombre.replaceChild(vacio, nombre.lastChild);
+                  }else{
+                      bien[0] = false;
+                      nombre.appendChild(vacio);
+                  }
+
+
+
+              }
+              function comprobarTel(valor){
+                                var vacio = document.createElement("p");
+              vacio.setAttribute("class", "error");
+              vacio.appendChild(document.createTextNode("Campo vacío"));
+
+                  var mal = document.createElement("p");
+                  mal.setAttribute("class","error");
+                  mal.appendChild(document.createTextNode("Telefono no valido"));
+                  var pattTel = /^\([0-9]{3}\) [0-9]{2}\-[0-9]{2}\-[0-9]{2}$/;
+                  var tele = document.getElementsByTagName("label")[1];
+                  
+                  if(valor !== ''){
+                      if(pattTel.test(valor)){
+                          bien[1] = true;
+                          if(tele.children.length==2){
+                              bien[1] = false;
+                             tele.removeChild(tele.lastChild);
+                           }
+                      }else if(tele.children.length == 2 ){
+                          bien[1] = false;
+                          tele.replaceChild(mal, tele.lastChild);
+                      }else{
+                          bien[1] = false;
+                          tele.appendChild(mal);
+
+                      }
+                  }else if(tele.children.length == 2){
+                      tele.replaceChild(vacio, tele.lastChild);
+                      bien[1] = false;
+                  }else{
+                      tele.appendChild(vacio);
+                      bien[1] = false;
+                  }
+              }
+              function comprobarMeses(valor){
+                                var vacio = document.createElement("p");
+              vacio.setAttribute("class", "error");
+              vacio.appendChild(document.createTextNode("Campo vacío"));
+
+                 var meses =  document.getElementsByTagName("label")[2];
+                 var mal = document.createElement("p");
+                  mal.setAttribute("class", "error");
+                  mal.appendChild(document.createTextNode("Cantidad de meses no valida"));
+                  
+                  if(valor !== ''){
+                     if(valor > 0 && valor < 24){
+                         bien[2] = true;
+                         if(meses.children.length==2){
+                             meses.removeChild(meses.lastChild);
+                         }
+                     }else if(meses.children.length==2){
+                         bien[2] = false;
+                         meses.replaceChild(mal, meses.lastChild);
+                     }else{
+                         bien[2] = false;
+                         meses.appendChild(mal);
+                     }
+                  }else if(meses.children.length == 2){
+                      meses.replaceChild(vacio, meses.lastChild);
+                      bien[2] = false;
+                  }else{
+                      meses.appendChild(vacio);
+                      bien[2] = false;
+                  }
+              }
+                  
+                  
+
+              function evaluar(e){
+                  function esTrue(cosa){
+                      return cosa;
+                  }
+                  e.preventDefault();        
+                  comprobarNombre(document.getElementsByTagName("input")[0].value);
+                  comprobarTel(document.getElementsByTagName("input")[1].value);
+                  comprobarMeses(document.getElementsByTagName("input")[2].value);
+
+                  if(bien.every(esTrue)){
+                      vent = window.open("","", "width = 300, height=300, top=1500, left=400");
+                      vent.document.write("Felicidades, estamos suscribiendote...");
+                      to = setTimeout(cerrar,3000);
+                  }else{
+                      
+                  }
+              }
+                  function cerrar(){
+                      vent.close();
+                      var fecha = new Date();
+                    fecha.setMonth(fecha.getMonth() + Number(document.getElementsByName("meses")[0].value));
+                    setCookie('name', document.getElementsByName("nombre")[0].value, fecha);
+                    setCookie('fecha', fecha, fecha);
+                    location.reload();
+                  }
+                  
+                  function cancelar(e){
+                      if(e.ctrlKey && e.keyCode == 67){
+                          console.log("Cancelando subscripcion");
+                          delCookie("fecha");
+                          delCookie("name");
+                          location.reload();
+                      }  
+                  }
+
+              window.onload = function(){
+                  buscar();
+                  if(getCookie('name') != null){
+                        bodi.removeChild(formu);
+                        bodi.removeChild(huno);
+                        var par = document.createElement("p");
+                        fecha2 = getCookie("fecha");
+                        fecha3 = new Date(fecha2);
+
+                        par.appendChild(document.createTextNode("Bienvenido "+ getCookie("name") + ", tu suscripcion dura hasta " + fecha3.toLocaleDateString()));
+                      bodi.appendChild(par);
+                      document.onkeydown = cancelar;
+
+                  }else{
+                      var inputs = document.getElementsByTagName("input");
+                   for (var i = 0; i < inputs.length-1 ; i++) {
+                       inputs[i].addEventListener("focusout", comprobar);
+                   }
+                   boton.addEventListener("click", evaluar);
+
+                }
+              }
+
+               </script>
+
+        </head>
+        <body id="bodi">
+              <h1 id="huno">Formulario de registo Formación Doñana</h1>
+              <form id="formu" action="#">
+
+                  <label>Nombre:
+                        <input type="text" name="nombre" title='Debe contener al menos una minúscula, mayúscula,número y alguno de estos signos (. - _)' />
+                  </label>
+                  <br>
+                  <label>Teléfono:
+                        <input name="telefono" id="tel" type="text"  placeholder='(XXX) XX-XX-XX' />
+                  </label>
+                  <br>
+                  <label>Nº meses:
+                        <input type="number" name="meses" min='1' max='24' title='Debe introducir una cantidad entre 1 y 24'/>
+                  </label>
+                  <br><br>
+
+                  <input type="submit" id="boton" value="Registrar" />
+
+              </form>
+
+        </body>
+</html>

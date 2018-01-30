@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Actividad 6</title>
+        <script type="text/javascript" src="cookies.js"></script>
+        <script type="text/javascript">
+            
+            var total = 0;
+            if(getCookie("total")===null){
+                setCookie("total",0);
+            }
+            
+            function votar(){
+                total ++;
+                console.log(total);
+                var radios = document.forms[0];
+                for(var i = 0; i < radios.a.length; i++){
+                    if(radios.a[i].checked){
+                        console.log(radios.a[i].value);
+                        setCookie(radios.a[i].value, getCookie(radios.a[i].value) +1);
+                        
+                    }
+                }
+            }
+            
+            function votaciones(){
+                if(getCookie("iOs") === null){
+                    console.log("No existen cookies de iOs");
+                    setCookie("iOs",0);
+                }       
+                if(getCookie("Android") === null){
+                    console.log("No existen cookies de Android");
+                    setCookie("Android",0);
+                }                
+                if(getCookie("windows") === null){
+                    console.log("No existen cookies de Windows Phone");
+                    setCookie("windows",0);
+                }
+                if(getCookie("Otro") === null){
+                    console.log("No existen cookies de otros SO");
+                    setCookie("Otro",0);
+                }
+            }
+            votaciones();
+            window.onload = function(){
+            }
+        </script>
+    </head>
+
+    <body>
+        <h1>¿Que sistema operativo movil te gusta mas?</h1>
+        <br/>
+        <form action="javascript:votar()" method="post" id="formu">
+            <input type="radio" name="a" value="iOS"/>iOs<br/>
+            <input type="radio"  name="a" value="Android"/>Android<br/>
+            <input type="radio"  name="a" value="Windows"/>Windows Phone<br/>
+            <input type="radio"  name="a" value="Otro"/>Otro<br/>
+            <input id="vot" type="submit"  name="a" value="¡Votar!" /> <br/> 
+        </form>
+        <br/><br/>
+        
+            <meter id="meterIos" value=""></meter>iOs<br/>
+            <meter id="meterAndroid" value="0%"></meter>Android<br/>
+            <meter id="meterWindows" value="0%"></meter>Windows Phone<br/>
+            <meter id="meterOtros" value="0%"></meter>Otros<br/>
+    </body>
+
+</html>
